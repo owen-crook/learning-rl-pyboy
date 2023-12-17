@@ -1,0 +1,22 @@
+version: '3'
+
+tasks:
+  build:
+    desc: |
+      build the image with tag matching the repo
+    cmds:
+      - docker build -t learning-rl-pyboy .
+
+  stop:
+    desc: |
+      checks if the container with matching tag is running and stops it
+    cmds:
+      - if docker ps -q --filter "name=learning-rl-pyboy" | grep -q .; then docker stop learning-rl-pyboy; fi
+
+  run:
+    desc: |
+      run the image, ensuring if the image was previously running to stop it and build the image again
+    cmds: 
+      - task: stop
+      - task: build
+      - docker run --rm --name learning-rl-pyboy learning-rl-pyboy
